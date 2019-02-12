@@ -1,0 +1,18 @@
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+  <div class="sidebar-sticky">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <%= link_to "<span data-feather='home'></span> Dashboard".html_safe, admin_path, class: "nav-link #{active?(admin_path)}" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "<span data-feather='shopping-cart'></span> Services".html_safe, admin_services_path, class: "nav-link #{active?(admin_services_path)}" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "<span data-feather='users'></span> Users".html_safe, admin_users_path, class: "nav-link #{active?(admin_users_path)}" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "<span data-feather='layers'></span> Stores".html_safe, admin_stores_path, class: "nav-link #{active?(admin_stores_path)}" %>
+      </li>
+    </ul>
+  </div>
+</nav>

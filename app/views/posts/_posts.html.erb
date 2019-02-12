@@ -1,0 +1,23 @@
+<table class="table">
+  <tr>
+    <th>Detailer</th>
+    <th>Date</th>
+    <th>Stk Num</th>
+    <th>Services</th>
+    <th>Status</th>
+  </tr>
+  <% lists.each do |p| %>
+    <tr>
+      <td><%= p.user.full_name %></td>
+      <td><%= p.date %></td>
+      <td><%= link_to p.stk_num, edit_post_path(p) %></td>
+      <td>
+        <% p.services.each do |s| %>
+          <span class="badge badge-pill badge-secondary"><%= s.service_name %></span>
+        <% end %>
+        
+      </td>
+      <td><span class="<%= status_style(p.status) %>" ><%= p.status.humanize %></span></td>
+    </tr>
+  <% end %>
+</table>

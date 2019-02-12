@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Services</h1>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Add Service</h5>
+          <%= form_for :service, :url => admin_service_path(@service), method: :put do |f| %>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <%= f.label :service_name %>
+                <%= f.text_field :service_name, class: 'form-control form-control-sm' %>
+              </div>
+            </div>
+            <div class="col">
+              <%= f.label "Pay Amount" %>
+              <%= f.number_field :pay_time, step: 0.5, class: 'form-control form-control-sm' %>
+            </div>
+            <div class="col">
+              <%= f.collection_select(:store_id, @stores, :id, :name) %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <%= f.label :description %>
+                <%= f.text_area :description, class: 'form-control form-control-sm' %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <%= f.submit "Edit", class: 'btn btn-primary btn-sm' %>
+              </div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

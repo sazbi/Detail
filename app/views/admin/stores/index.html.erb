@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Store Dashboard</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#addStore">Add Store</button>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <% @stores.each do |store| %>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= store.name %>
+            </h5>
+            <ul>
+              <li>Total Submitted:
+                <%= Post.store_submitted(store.id, sort_start, sort_end).count %>
+              </li>
+              <li>Total Approved:
+                <%= Post.store_approved(store.id, sort_start, sort_end).count %>
+              </li>
+              <li>Total Rejected:
+                <%= Post.store_rejected(store.id, sort_start, sort_end).count %>
+              </li>
+              <li>Total Paid:
+                <%= Post.store_paid(store.id, sort_start, sort_end).count %>
+              </li>
+            </ul>
+            <h6>Export:</h6>
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <%= link_to "This Week", admin_stores_export_weekly_path(format: "csv", status: "paid", store_id: store.id, start_date: sort_start, end_date: sort_end), class: 'btn btn-secondary btn-sm' %>
+              <%= link_to "This Month", admin_stores_export_weekly_path(format: "csv", status: "paid", store_id: store.id, start_date: Date.today.beginning_of_month, end_date: Date.today.end_of_month), class: 'btn btn-sm btn-primary' %> 
+              <%= link_to "Last Month", admin_stores_export_weekly_path(format: "csv", status: "paid", store_id: store.id, start_date: Date.today.prev_month.beginning_of_month, end_date: Date.today.prev_month.end_of_month), class: 'btn btn-sm btn-primary' %> 
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="modal fade" id="addStore" tabindex="-1" role="dialog" aria-labelledby="addStoreTitle"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <%= form_for :store, :url => admin_stores_path do |f| %>
+        <div class="modal-header">
+          <h5 class="modal-title" id="addStoreTitle">Add Store</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <%= f.label :name %>
+            <%= f.text_field :name, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <%= f.submit "Add Store", class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

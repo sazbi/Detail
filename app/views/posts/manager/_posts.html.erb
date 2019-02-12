@@ -1,0 +1,95 @@
+<%= form_for :post, :url => admin_update_status_path, :html => { :method => :put } do |f| %>
+<table class="table table-striped table-sm">
+  <tr>
+    <th>Detailer</th>
+    <th>Date</th>
+    <th>Stk Num</th>
+    <th>Services</th>
+    <th>Update?</th>
+    <th>Status</th>
+  </tr>
+  <tbody>
+    <% lists.each do |p| %>
+    <tr id="row-<%= p.id %>">
+      <td id="name-<%= p.id %>">
+        <%= p.user.full_name %>
+      </td>
+      <td>
+        <%= p.date %>
+      </td>
+      <td id="stk-<%= p.id %>">
+        <%= link_to p.stk_num, edit_post_path(p) %>
+      </td>
+      <td>
+        <% p.services.each do |s| %>
+        <span class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" title="<b>Description:</b> <%= s.description %><br><b>Time:</b> <%= s.pay_time %>">
+          <%= s.service_name %></span>
+        <% end %>
+        <span class="badge badge-pill badge-info" id="total-<%= p.id %>">Total:
+          <%= p.pay_calc %></span>
+      </td>
+      <td>
+        <%= check_box_tag "post_ids[]", p.id if params[:status] != "paid" %>
+      </td>
+      <td><span class="<%= status_style(p.status) %>">
+          <%= p.status.humanize %></span></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= render partial: 'posts/manager/approve', locals: { f: f } %>
+<% end %>
+<button id="updateRecords" type="button" class="btn btn-info" data-toggle="modal" data-target="#paidModalCenter" onclick="combineInfo()">
+  Update Records?
+</button>
+<script>
+  $(function () {$('[data-toggle="tooltip"]').tooltip()})
+</script>
+<script>
+  var checked = [];
+  var names = [];
+  var stkNumbers = [];
+  var totals = [];
+
+  var boxes = $('input:checkbox');
+
+  boxes.on('change', function () {
+    $('#updateRecords').prop('disabled', !boxes.filter(':checked').length);
+  }).trigger('change');
+
+  function getIDs() {
+    $("input:checkbox").each(function () {
+      var $this = $(this);
+
+      if ($this.is(":checked")) {
+        if (checked.includes($this.attr("value")) == false) {
+          checked.push($this.attr("value"));
+        } else {
+          console.log("welp")
+        }
+      }
+    });
+  }
+
+  function getNames() {
+    for (i = 0; i < checked.length; i++) {
+      names.push($('#name-' + checked[i]).text());
+      stkNumbers.push($('#stk-' + checked[i]).text());
+      totals.push($('#total-' + checked[i]).text());
+    }
+  }
+
+  function printNames() {
+    for (i = 0; i < names.length; i++) {
+      $('#modal-table').append("<tr><td>" + names[i] + "</td><td>" + stkNumbers[i] + "</td><td>" + totals[i] + "</tr>");
+    }
+  }
+  function combineInfo() {
+    getIDs();
+    getNames();
+    printNames();
+  }
+
+
+</script>
+

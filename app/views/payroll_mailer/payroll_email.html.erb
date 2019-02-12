@@ -1,0 +1,20 @@
+<table>
+  <thead>
+    <th>Detailer</th>
+    <th>DMS ID</th>
+    <th>Stk Nums</th>
+    <th>Total Pay</th>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.full_name %></td>
+        <td><%= user.dms_id %></td>
+        <td><%= user.paid_list(@start_week, @end_week) %></td>
+        <td><%= user.totals(@start_week, @end_week) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+  
+
+</table>

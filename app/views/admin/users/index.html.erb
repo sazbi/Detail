@@ -1,0 +1,67 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">User Dashboard</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <%= link_to "Export Users", admin_users_path(format: "csv"), class: "btn btn-sm btn-outline-secondary" %>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <%= render 'form' %>
+    <div class="col-md-12">
+      <ul class="nav nav-tabs" role="tablist">
+        <% @stores.each do |store| %>
+          <li class="nav-item">
+            <a class="nav-link" href="#store<%= store.id %>" role="tab" data-toggle="tab"><%= store.name %></a>
+          </li>
+        <% end %>
+      </ul>
+
+      <div class="tab-content">
+        <% @stores.each do |store| %>
+          <div role="tabpanel" class="tab-pane fade" id="store<%= store.id %>">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">User List</h5>
+                <table class="table table-striped table-sm">
+                  <thead>
+                    <tr>
+                      <th>Full Name</th>
+                      <th>DMS ID</th>
+                      <th>Store</th>
+                      <th>Type</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% store.users.each do |user| %>
+                      <tr>
+                        <td><%= link_to user.full_name, admin_user_path(user.id) %></td>
+                        <td><%= user.dms_id %></td>
+                        <td>
+                          <ul>
+                            <% user.stores.each do |store| %>
+                              <li><span class="badge badge-pill badge-primary"><%= store.name.titleize %></span></li>
+                            <% end %>
+                          </ul>
+                          
+                        </td>
+                        <td><%= user.type %></td>
+                        <td>
+                          <% if user.disabled? %>
+                            <%= link_to "Activate", toggle_status_admin_user_path(user.id), class: 'btn btn-sm btn-success' %>
+                          <% else %>
+                            <%= link_to "Disable", toggle_status_admin_user_path(user.id), class: 'btn btn-sm btn-danger' %>
+                          <% end %>
+                        </td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

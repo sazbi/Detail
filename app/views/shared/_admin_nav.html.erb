@@ -1,0 +1,16 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Company Wide</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <%= nav_bar_links(current_user) %>
+    </ul>
+    <span class="navbar-text">
+      <%= current_payweek[:days_left] %> Days left to submit payroll.
+    </span>
+    <%= link_to "Admin Panel", admin_path, class: 'btn btn-primary btn-sm' if current_user.type == "AdminUser" %>
+    <%= link_to "Log Out", destroy_user_session_path, method: :delete, class: 'btn btn-danger btn-sm'%>
+  </div>
+</nav>

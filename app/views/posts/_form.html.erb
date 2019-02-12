@@ -1,0 +1,55 @@
+<div class="container">
+  <%= form_for(@post) do |f| %>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <%= f.label :stk_num %>
+        <%= f.text_field :stk_num, class: 'form-control' %>
+      </div>
+
+      <div class="form-group col-md-4">
+        <%= f.label :user_id %>
+        <%= f.collection_select(:user_id, @users, :id, :full_name) %>
+      </div>
+
+      <div class="form-group col-md-4">
+        <%= f.label :date %>
+        <% if browser.ie? %>
+          <%= f.date_select :date, class: 'form-control' %>
+        <% else %>
+          <%= f.date_field :date, class: 'form-control' %>
+        <% end %>
+      </div>
+    </div>   
+  
+    <div class="form-group">
+      <div class="container">
+        <div class="row">
+          <% @services.each do |s| %>
+            <div class="col-md-2">
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title"><%= s.service_name %></h6>
+                  <%= f.check_box :service_ids, { multiple: true }, s.id, false %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <%= f.label :comments %>
+      <%= f.text_area :comments, class: 'form-control' %>
+    </div>
+
+    <% if current_user.type == "ManagerUser" %>
+      <%= render partial: 'manager', locals: { f: f } %>
+    <% elsif current_user.type == "AdminUser" %>
+      <%= render partial: 'admin', locals: { f: f } %>
+    <% end %>
+    
+    <%= f.submit "Add Vehicle", class: 'btn btn-primary' %>
+  
+  <% end %>
+</div>

@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Dashboard</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+  <%= form_tag('/admin', method: :get) do |s| %>
+    Start Date: <%= date_field_tag :start_date, sort_start %>
+    End Date: <%= date_field_tag :end_date, sort_end %>
+    <%= submit_tag "Update Date", class: 'btn btn-sm btn-info' %>
+  <% end %>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <% @stores.each do |store| %>
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= store.name %>
+            </h5>
+            <ul>
+              <li>Total Submitted:
+                <%= Post.store_submitted(store.id, sort_start, sort_end).count %>
+              </li>
+              <li>Total Approved:
+                <%= Post.store_approved(store.id, sort_start, sort_end).count %>
+              </li>
+              <li>Total Rejected:
+                <%= Post.store_rejected(store.id, sort_start, sort_end).count %>
+              </li>
+              <li>Total Paid:
+                <%= Post.store_paid(store.id, sort_start, sort_end).count %>
+              </li>
+            </ul>
+            <%= all_paid?(Post.store_submitted(store.id, sort_start, sort_end).count, Post.store_approved(store.id, sort_start, sort_end).count, store.id) %>
+          </div>
+        </div>
+      </div>  
+    <% end %>
+  </div>
+</div>     

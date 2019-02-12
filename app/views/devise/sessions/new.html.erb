@@ -1,0 +1,22 @@
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "form-signin" }) do |f| %>
+  <%= image_tag("login_header.jpg", class:'img-fluid')%>
+  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+  <%= f.label :username, class: 'sr-only' %>
+  <%= f.text_field :username, autofocus: true, autocomplete: "username", class: 'form-control', placeholder: 'Username' %>
+  <%= f.label :password, class: 'sr-only' %>
+  <%= f.password_field :password, autocomplete: "off", class: 'form-control', placeholder: 'Password' %>
+  <div class="checkbox mb-3">
+    <% if devise_mapping.rememberable? -%>
+      <label>
+        <%= f.check_box :remember_me %> Remember me
+      </label>
+    <% end -%>    
+  </div>
+  <%= f.submit "Sign in", class: 'btn btn-lg btn-primary btn-block' %><br>
+  <%= render "devise/shared/links" %>
+  <p class="mt-5 mb-3 text-muted">&copy; 2018 Boniface Hiers Automotive Group</p>
+  
+<% end %>
+
+

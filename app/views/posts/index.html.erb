@@ -1,0 +1,15 @@
+<% if current_user.type == "AdminUser" %>
+  <%= render partial: 'posts/admin/post_index', locals: { submitted: @submitted, approved: @approved, rejected: @rejected, paid: @paid } %>
+<% elsif current_user.type == "ManagerUser" %>
+  <%= render 'posts/manager/post_index' %>
+<% else %>
+  <%= render partial: 'posts/user/post_index', locals: { submitted: @submitted, approved: @approved, rejected: @rejected, paid: @paid } %>
+<% end %>
+
+
+
+
+
+
+
+

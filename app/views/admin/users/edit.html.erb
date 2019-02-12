@@ -1,0 +1,76 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Add User</h5>
+          <%= form_for :user, :url => admin_user_path(@user), :method => :put do |f| %>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <%= f.label :username %>
+                <%= f.text_field :username, required: true, autofocus: true, class: 'form-control form-control-sm' %>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <%= f.label :email %>
+                <%= f.email_field :email, required: true, class: 'form-control form-control-sm' %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <%= f.label :first_name %>
+                <%= f.text_field :first_name, required: true, class: 'form-control form-control-sm' %>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <%= f.label :last_name %>
+                <%= f.text_field :last_name, required: true, class: 'form-control form-control-sm' %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <%= f.label :password %>
+                <%= f.password_field :password, required: true, class: 'form-control form-control-sm' %>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <%= f.label :password_confirmation %>
+                <%= f.password_field :password_confirmation, required: true, class: 'form-control form-control-sm' %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <% @stores.each do |store| %>
+              <div class="form-check">
+                <%= f.check_box :store_ids, { multiple: true }, store.id, false %>
+                <%= f.label store.name %>
+              </div>
+              <% end %>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <%= f.label :dms_id %>
+                <%= f.text_field :dms_id, required: true, class: 'form-control form-control-sm' %>
+              </div>
+              <div class="form-group">
+                <%= f.label :type %>
+                <%= f.select(:type, options_for_select([['User', ''], ['Manager', 'ManagerUser'], ['Admin', 'AdminUser']]), class: 'form-control form-control-sm') %>
+              </div>
+            </div>
+          </div>
+          <%= f.submit "Add User", class: "btn btn-sm btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

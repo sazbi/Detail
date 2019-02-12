@@ -1,0 +1,114 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">User: <%= @user.full_name %></h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <%= form_tag("/admin/users/#{@user.id}", method: :get) do |s| %>
+      Start Date: <%= date_field_tag :start_date, sort_start %>
+      End Date: <%= date_field_tag :end_date, sort_end %>
+      <%= submit_tag "Update Date", class: 'btn btn-sm btn-info' %>
+    <% end %>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">Performance for Week of <%= sort_start %></h6>
+          <canvas id="postCount"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">Performance Current Month</h6>
+          <canvas id="currentMonth"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h2></h2>
+      <table class="table table-striped">
+        <thead>
+          <th>ID#</th>
+          <th>Store</th>
+          <th>Services</th>
+          <th>Ammount</th>
+        </thead>
+        <tbody>
+          <% @week_posts.each do |post| %>
+            <tr>
+              <td><%= post.id %></td>
+              <td><%= post.store.name %></td>
+              <td>
+                <ul>
+                  <% post.services.each do |service| %>
+                    <li><%= service.service_name %> | <%= service.pay_time %></li>
+                  <% end %>
+                </ul>
+              </td>
+              <td><%= post.pay_calc %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+<script ></script>
+<script>
+ 
+  var weekServiceName = []
+  var weekServiceValue = []
+  var monthServName = []
+  var monthServValue = []
+  var weekAmts = <%= @week_amts.html_safe %>;
+  var monthAmts = <%= @month_amts.html_safe %>;
+
+  for(i in weekAmts)
+    weekServiceName.push(i);
+  
+  for(i in weekAmts)
+    weekServiceValue.push(weekAmts[i]);
+
+  for(i in monthAmts)
+    monthServName.push(i);
+
+  for(i in monthAmts)
+    monthServValue.push(monthAmts[i])
+
+  function randomColors(list) {
+    var colors = [];
+    for(i = 0; i < list.length; i++){
+      colors.push('#' + (Math.random().toString(16) + '0000000').slice(2, 8));
+    }
+    return colors
+  }
+
+  var weekCanvas = document.getElementById('postCount').getContext('2d');
+  var postCount = new Chart(weekCanvas, {
+    type: 'doughnut',
+    data: {
+      labels: weekServiceName,
+      datasets: [{
+        data: weekServiceValue,
+        backgroundColor: randomColors(weekServiceName),
+      }],
+    },
+  });
+
+  var currentMonth = document.getElementById('currentMonth').getContext('2d');
+  var currentMonthPie = new Chart(currentMonth, {
+    type: 'doughnut',
+    data: {
+      labels: monthServName,
+      datasets: [{
+        data: monthServValue,
+        backgroundColor: randomColors(monthServName),
+        }],
+    }
+  });
+</script>
